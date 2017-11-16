@@ -1,0 +1,2 @@
+inherit_gem:
+  dm_linters: './config/.rubocop.yml'
