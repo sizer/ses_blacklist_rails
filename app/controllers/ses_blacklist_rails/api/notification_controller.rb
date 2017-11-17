@@ -1,6 +1,9 @@
-require_dependency "ses_blacklist_rails/application_controller"
+require_dependency 'ses_blacklist_rails/application_controller'
 
 module SesBlacklistRails
-  class Api::NotificationController < ApplicationController
+  module Api
+    class NotificationController < ApplicationController # :nodoc:
+      def index; end
+    end
   end
 end
