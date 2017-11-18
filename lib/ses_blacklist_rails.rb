@@ -1,5 +1,12 @@
-require "ses_blacklist_rails/engine"
+require 'ses_blacklist_rails/config'
+require 'ses_blacklist_rails/engine'
 
-module SesBlacklistRails
-  # Your code goes here...
+module SesBlacklistRails # :nodoc:
+  def self.configure(*)
+    yield config
+  end
+
+  def self.config
+    @config ||= SesBlacklistRails::Config.new
+  end
 end
