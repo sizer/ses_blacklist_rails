@@ -10,46 +10,90 @@ module SesBlacklistRails
       context 'BoundMail' do
         context 'with DSN' do
           let(:param) { File.read(fixture_path.join('bounce_dsn.json')) }
-          it 'returns no_contents' do
-            post api_notification_path, params: param
-            expect(response.status).to eq 204
-          end
+          before { post api_notification_path, params: param }
+
+          it { expect(response.status).to eq 204 }
+          it { expect { post api_notification_path, params: param }.to(change { Notification.count }) }
+          it {
+            expect(Notification.last.notification_type_before_type_cast)
+              .to eq(Notification.notification_types[:bounce])
+          }
+          it {
+            expect(Notification.find_by(email: 'jane@example.com',
+                                        notification_type: Notification.notification_types[:bounce])).to be_truthy
+          }
         end
 
         context 'without DSN' do
           let(:param) { File.read(fixture_path.join('bounce.json')) }
-          it 'returns no_contents' do
-            post api_notification_path, params: param
-            expect(response.status).to eq 204
-          end
+          before { post api_notification_path, params: param }
+
+          it { expect(response.status).to eq 204 }
+          it { expect { post api_notification_path, params: param }.to(change { Notification.count }) }
+          it {
+            expect(Notification.last.notification_type_before_type_cast)
+              .to eq(Notification.notification_types[:bounce])
+          }
+          it {
+            expect(Notification.find_by(email: 'jane@example.com',
+                                        notification_type: Notification.notification_types[:bounce])).to be_truthy
+          }
+          it {
+            expect(Notification.find_by(email: 'richard@example.com',
+                                        notification_type: Notification.notification_types[:bounce])).to be_truthy
+          }
         end
       end
 
       context 'Complaint' do
         context 'with feedback report' do
           let(:param) { File.read(fixture_path.join('complaint_feedback.json')) }
-          it 'returns no_contents' do
-            post api_notification_path, params: param
-            expect(response.status).to eq 204
-          end
+          before { post api_notification_path, params: param }
+
+          it { expect(response.status).to eq 204 }
+          it { expect { post api_notification_path, params: param }.to(change { Notification.count }) }
+          it {
+            expect(Notification.last.notification_type_before_type_cast)
+              .to eq(Notification.notification_types[:complaint])
+          }
+          it {
+            expect(Notification.find_by(email: 'richard@example.com',
+                                        notification_type: Notification.notification_types[:complaint])).to be_truthy
+          }
         end
 
         context 'without feedback report' do
           let(:param) { File.read(fixture_path.join('complaint.json')) }
-          it 'returns no_contents' do
-            post api_notification_path, params: param
-            expect(response.status).to eq 204
-          end
+          before { post api_notification_path, params: param }
+
+          it { expect(response.status).to eq 204 }
+          it { expect { post api_notification_path, params: param }.to(change { Notification.count }) }
+          it {
+            expect(Notification.last.notification_type_before_type_cast)
+              .to eq(Notification.notification_types[:complaint])
+          }
+          it {
+            expect(Notification.find_by(email: 'richard@example.com',
+                                        notification_type: Notification.notification_types[:complaint])).to be_truthy
+          }
         end
       end
 
       context 'Delivery' do
         context 'with feedback report' do
           let(:param) { File.read(fixture_path.join('delivery.json')) }
-          it 'returns no_contents' do
-            post api_notification_path, params: param
-            expect(response.status).to eq 204
-          end
+          before { post api_notification_path, params: param }
+
+          it { expect(response.status).to eq 204 }
+          it { expect { post api_notification_path, params: param }.to(change { Notification.count }) }
+          it {
+            expect(Notification.last.notification_type_before_type_cast)
+              .to eq(Notification.notification_types[:delivery])
+          }
+          it {
+            expect(Notification.find_by(email: 'jane@example.com',
+                                        notification_type: Notification.notification_types[:delivery])).to be_truthy
+          }
         end
       end
     end
