@@ -10,27 +10,15 @@ module SesBlacklistRails
         case @params[:notificationType]
         when 'Bounce'
           @params[:bounce][:bouncedRecipients].each do |r|
-            Notification.create(
-              notification_type: Notification.notification_types[:bounce],
-              email: r[:emailAddress],
-              log: @params
-            )
+            create_notification(r, :bounce)
           end
         when 'Complaint'
           @params[:complaint][:complainedRecipients].each do |r|
-            Notification.create(
-              notification_type: Notification.notification_types[:complaint],
-              email: r[:emailAddress],
-              log: @params
-            )
+            create_notification(r, :complaint)
           end
         when 'Delivery'
           @params[:delivery][:recipients].each do |r|
-            Notification.create(
-              notification_type: Notification.notification_types[:delivery],
-              email: r,
-              log: @params
-            )
+            create_notification(r, :delivery)
           end
         end
       end
@@ -39,6 +27,14 @@ module SesBlacklistRails
 
       def parse_request
         @params ||= JSON.parse(request.body.read, symbolize_names: true)
+      end
+
+      def create_notification(recipient, type)
+        Notification.create(
+          notification_type: Notification.notification_types[type],
+          email: type == :delivery ? recipient : recipient[:emailAddress],
+          log: @params
+        )
       end
     end
   end
