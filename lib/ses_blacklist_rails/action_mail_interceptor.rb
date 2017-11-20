@@ -16,10 +16,10 @@ module SesBlacklistRails
         end
 
         unless SesBlacklistRails.send_compliant
-          validate_bounce = ->(email) { SesBlacklistRails::Notification.compliant.find_by(email: email) }
-          message.to.reject!(validate_bounce)
-          message.cc.reject!(validate_bounce)
-          message.bcc.reject!(validate_bounce)
+          validate_compliant = ->(email) { SesBlacklistRails::Notification.compliant.find_by(email: email) }
+          message.to.reject!(validate_compliant)
+          message.cc.reject!(validate_compliant)
+          message.bcc.reject!(validate_compliant)
         end
 
         defualt_address!(message) if message.to.blank?
@@ -27,7 +27,11 @@ module SesBlacklistRails
       end
 
       def defualt_address!(message)
-        message.to << SesBlacklistRails::Notification.default_address
+        if SesBlacklistRails::Notification.default_address.blank?
+          message.perform_deliveries = false
+        else
+          message.to << SesBlacklistRails::Notification.default_address
+        end
         message
       end
     end
