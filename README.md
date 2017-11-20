@@ -1,5 +1,8 @@
 # SesBlacklistRails
-Short description and motivation.
+[![Gem Version](https://badge.fury.io/rb/ses_blacklist_rails.svg)](https://badge.fury.io/rb/ses_blacklist_rails)
+[![CircleCI](https://circleci.com/gh/mrdShinse/sns_blacklist_rails/tree/master.svg?style=svg)](https://circleci.com/gh/mrdShinse/sns_blacklist_rails/tree/master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/4f1e146157fdfacbdde1/maintainability)](https://codeclimate.com/github/mrdShinse/sns_blacklist_rails/maintainability)
+[![Dependency Status](https://gemnasium.com/badges/github.com/mrdShinse/sns_blacklist_rails.svg)](https://gemnasium.com/github.com/mrdShinse/sns_blacklist_rails)
 
 ## Installation
 Add this line to your application's `Gemfile`:
