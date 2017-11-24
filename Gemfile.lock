@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ses_blacklist_rails (0.0.2)
+    ses_blacklist_rails (0.0.3)
       rails (>= 4.1, < 5.2)
 
 GEM
