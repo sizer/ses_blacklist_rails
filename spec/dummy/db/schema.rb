@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20171116073708) do
     t.text "log", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["notification_type", "email"], name: "index_ses_notifications_on_notification_type_and_email"
   end
 
 end

@@ -1,4 +1,4 @@
-class CreateSesBlacklistRailsNotifications < ActiveRecord::Migration[5.1] # :nodoc:
+class CreateSesBlacklistRailsNotifications < ActiveRecord::Migration[5.0] # :nodoc:
   def change
     create_table :ses_notifications do |t|
       t.integer :notification_type, null: false, default: 0
@@ -7,5 +7,7 @@ class CreateSesBlacklistRailsNotifications < ActiveRecord::Migration[5.1] # :nod
 
       t.timestamps
     end
+
+    add_index :ses_notifications, %i[notification_type email]
   end
 end
