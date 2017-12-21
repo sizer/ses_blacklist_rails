@@ -31,6 +31,9 @@ module SesBlacklistRails
             @params[:delivery][:recipients].each do |r|
               create_notification(r, :delivery)
             end
+          else
+            create_notification('', :other)
+            render plain: '', status: 403
           end
         end
       end
