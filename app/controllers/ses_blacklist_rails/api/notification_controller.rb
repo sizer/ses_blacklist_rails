@@ -7,18 +7,30 @@ module SesBlacklistRails
       before_action :parse_request
 
       def index
-        case @params[:notificationType]
-        when 'Bounce'
-          @params[:bounce][:bouncedRecipients].each do |r|
-            create_notification(r, :bounce)
+        if @params[:Type] == 'SubscriptionConfirmation'
+          create_notification('', :other)
+          begin
+            uri = URI.parse @params[:SubscribeURL]
+            res = Net::HTTP.get_response uri
+            return render plain: '', status: 500 if res.code.to_i != 200
+          rescue StandardError
+            return render plain: '', status: 500
           end
-        when 'Complaint'
-          @params[:complaint][:complainedRecipients].each do |r|
-            create_notification(r, :complaint)
-          end
-        when 'Delivery'
-          @params[:delivery][:recipients].each do |r|
-            create_notification(r, :delivery)
+
+        else
+          case @params[:notificationType]
+          when 'Bounce'
+            @params[:bounce][:bouncedRecipients].each do |r|
+              create_notification(r, :bounce)
+            end
+          when 'Complaint'
+            @params[:complaint][:complainedRecipients].each do |r|
+              create_notification(r, :complaint)
+            end
+          when 'Delivery'
+            @params[:delivery][:recipients].each do |r|
+              create_notification(r, :delivery)
+            end
           end
         end
       end
@@ -32,7 +44,7 @@ module SesBlacklistRails
       def create_notification(recipient, type)
         Notification.create(
           notification_type: Notification.notification_types[type],
-          email: type == :delivery ? recipient : recipient[:emailAddress],
+          email: %i[delivery other].include?(type) ? recipient : recipient[:emailAddress],
           log: @params
         )
       end

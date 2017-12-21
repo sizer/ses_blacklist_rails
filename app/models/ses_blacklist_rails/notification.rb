@@ -5,7 +5,8 @@ module SesBlacklistRails
     enum notification_type: {
       bounce: 0,
       complaint: 1,
-      delivery: 2
+      delivery: 2,
+      other: 9
     }
   end
 end
