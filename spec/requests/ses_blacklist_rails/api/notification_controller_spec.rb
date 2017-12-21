@@ -4,6 +4,10 @@ module SesBlacklistRails
   RSpec.describe Api::NotificationController, type: :request do
     include SesBlacklistRails::Engine.routes.url_helpers
 
+    def mimic_sns(json)
+      { Type: 'Notification', Message: json }.to_json
+    end
+
     describe 'POST /api/notification' do
       let(:fixture_path) { Rails.root.join('..', 'fixture', 'ses', 'response') }
 
@@ -72,7 +76,7 @@ module SesBlacklistRails
 
       context 'BoundMail' do
         context 'with DSN' do
-          let(:param) { File.read(fixture_path.join('bounce_dsn.json')) }
+          let(:param) { mimic_sns File.read(fixture_path.join('bounce_dsn.json')) }
           before { post api_notification_path, params: param }
 
           it { expect(response.status).to eq 204 }
@@ -88,7 +92,7 @@ module SesBlacklistRails
         end
 
         context 'without DSN' do
-          let(:param) { File.read(fixture_path.join('bounce.json')) }
+          let(:param) { mimic_sns File.read(fixture_path.join('bounce.json')) }
           before { post api_notification_path, params: param }
 
           it { expect(response.status).to eq 204 }
@@ -110,7 +114,7 @@ module SesBlacklistRails
 
       context 'Complaint' do
         context 'with feedback report' do
-          let(:param) { File.read(fixture_path.join('complaint_feedback.json')) }
+          let(:param) { mimic_sns File.read(fixture_path.join('complaint_feedback.json')) }
           before { post api_notification_path, params: param }
 
           it { expect(response.status).to eq 204 }
@@ -126,7 +130,7 @@ module SesBlacklistRails
         end
 
         context 'without feedback report' do
-          let(:param) { File.read(fixture_path.join('complaint.json')) }
+          let(:param) { mimic_sns File.read(fixture_path.join('complaint.json')) }
           before { post api_notification_path, params: param }
 
           it { expect(response.status).to eq 204 }
@@ -144,7 +148,7 @@ module SesBlacklistRails
 
       context 'Delivery' do
         context 'with feedback report' do
-          let(:param) { File.read(fixture_path.join('delivery.json')) }
+          let(:param) { mimic_sns File.read(fixture_path.join('delivery.json')) }
           before { post api_notification_path, params: param }
 
           it { expect(response.status).to eq 204 }
