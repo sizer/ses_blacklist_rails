@@ -17,24 +17,25 @@ module SesBlacklistRails
             return render plain: '', status: 500
           end
 
-        else
-          case @params[:notificationType]
+        elsif @params[:Type] == 'Notification'
+          message = @params[:Message]
+          case message[:notificationType]
           when 'Bounce'
-            @params[:bounce][:bouncedRecipients].each do |r|
+            message[:bounce][:bouncedRecipients].each do |r|
               create_notification(r, :bounce)
             end
           when 'Complaint'
-            @params[:complaint][:complainedRecipients].each do |r|
+            message[:complaint][:complainedRecipients].each do |r|
               create_notification(r, :complaint)
             end
           when 'Delivery'
-            @params[:delivery][:recipients].each do |r|
+            message[:delivery][:recipients].each do |r|
               create_notification(r, :delivery)
             end
-          else
-            create_notification('', :other)
-            render plain: '', status: 403
           end
+        else
+          create_notification('', :other)
+          render plain: '', status: 403
         end
       end
 
