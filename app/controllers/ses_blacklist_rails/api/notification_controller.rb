@@ -18,7 +18,7 @@ module SesBlacklistRails
           end
 
         elsif @params[:Type] == 'Notification'
-          message = @params[:Message]
+          message = parse_json @params[:Message]
           case message[:notificationType]
           when 'Bounce'
             message[:bounce][:bouncedRecipients].each do |r|
@@ -42,7 +42,11 @@ module SesBlacklistRails
       private
 
       def parse_request
-        @params ||= JSON.parse(request.body.read, symbolize_names: true)
+        @params ||= parse_json request.body.read
+      end
+
+      def parse_json(raw)
+        JSON.parse(raw, symbolize_names: true)
       end
 
       def create_notification(recipient, type)
