@@ -7,6 +7,20 @@ module SesBlacklistRails
     describe 'POST /api/notification' do
       let(:fixture_path) { Rails.root.join('..', 'fixture', 'ses', 'response') }
 
+      context 'Undetectable request' do
+        let(:param) { '{"message": "this is mysterious message"}' }
+        before { post api_notification_path, params: param }
+
+        it { expect(response.status).to eq 403 }
+        it {
+          expect(
+            eval(Notification.order(:id)
+                             .find_by(notification_type: :other)
+                             .try(:log))
+          ).to eq eval(param)
+        }
+      end
+
       context 'SubscriptionConfirmation' do
         context 'POSTed valid JSON' do
           let(:param) { File.read(fixture_path.join('subscription_confirmation.json')) }
