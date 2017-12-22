@@ -1,2 +1,6 @@
 inherit_gem:
   dm_linters: './config/.rubocop.yml'
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
