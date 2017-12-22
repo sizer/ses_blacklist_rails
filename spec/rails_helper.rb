@@ -31,6 +31,7 @@ RSpec.configure do |config|
   config.tty = true
   config.formatter = :documentation
 
+  config.include FixtureHelper
   config.include SnsNotificationHelper
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures

@@ -5,8 +5,6 @@ module SesBlacklistRails
     include SesBlacklistRails::Engine.routes.url_helpers
 
     describe 'POST /api/notification' do
-      let(:fixture_path) { Rails.root.join('..', 'fixture', 'ses', 'response') }
-
       context 'Undetectable request' do
         let(:param) { { message: 'this is mysterious message' }.to_json }
         before { post api_notification_path, params: param }
@@ -23,7 +21,7 @@ module SesBlacklistRails
 
       context 'SubscriptionConfirmation' do
         context 'POSTed valid JSON' do
-          let(:param) { File.read(fixture_path.join('subscription_confirmation.json')) }
+          let(:param) { fetch_fixture 'subscription_confirmation.json' }
           context 'fail confirmation' do
             before do
               stub_request(:get, 'https://sns.us-west-2.amazonaws.com/?Action=ConfirmSubscription&Token=2336412f37fb687f5d51e6e241d09c805a5a57b30d712f794cc5f6a988666d92768dd60a747ba6f3beb71854e285d6ad02428b09ceece29417f1f02d609c582afbacc99c583a916b9981dd2728f4ae6fdb82efd087cc3b7849e05798d2d2785c03b0879594eeac82c01f235d0e717736&TopicArn=arn:aws:sns:us-west-2:123456789012:MyTopic')
@@ -72,7 +70,7 @@ module SesBlacklistRails
 
       context 'BoundMail' do
         context 'with DSN' do
-          let(:param) { sns_notification File.read(fixture_path.join('bounce_dsn.json')) }
+          let(:param) { sns_notification fetch_fixture 'bounce_dsn.json' }
           before { post api_notification_path, params: param }
 
           it('returns response satatus as 204') { expect(response.status).to eq 204 }
@@ -88,7 +86,7 @@ module SesBlacklistRails
         end
 
         context 'without DSN' do
-          let(:param) { sns_notification File.read(fixture_path.join('bounce.json')) }
+          let(:param) { sns_notification fetch_fixture('bounce.json') }
           before { post api_notification_path, params: param }
 
           it('returns response satatus as 204') { expect(response.status).to eq 204 }
@@ -110,7 +108,7 @@ module SesBlacklistRails
 
       context 'Complaint' do
         context 'with feedback report' do
-          let(:param) { sns_notification File.read(fixture_path.join('complaint_feedback.json')) }
+          let(:param) { sns_notification fetch_fixture('complaint_feedback.json') }
           before { post api_notification_path, params: param }
 
           it('returns response satatus as 204') { expect(response.status).to eq 204 }
@@ -126,7 +124,7 @@ module SesBlacklistRails
         end
 
         context 'without feedback report' do
-          let(:param) { sns_notification File.read(fixture_path.join('complaint.json')) }
+          let(:param) { sns_notification fetch_fixture('complaint.json') }
           before { post api_notification_path, params: param }
 
           it { expect(response.status).to eq 204 }
@@ -144,7 +142,7 @@ module SesBlacklistRails
 
       context 'Delivery' do
         context 'with feedback report' do
-          let(:param) { sns_notification File.read(fixture_path.join('delivery.json')) }
+          let(:param) { sns_notification fetch_fixture('delivery.json') }
           before { post api_notification_path, params: param }
 
           it('returns response satatus as 204') { expect(response.status).to eq 204 }
