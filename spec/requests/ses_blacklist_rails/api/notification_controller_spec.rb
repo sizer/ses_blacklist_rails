@@ -11,8 +11,8 @@ module SesBlacklistRails
         let(:param) { '{"message": "this is mysterious message"}' }
         before { post api_notification_path, params: param }
 
-        it { expect(response.status).to eq 403 }
-        it {
+        it('returns response satatus as 403') { expect(response.status).to eq 403 }
+        it('creates Notification as other, and persiste request body.') {
           expect(
             eval(Notification.order(:id)
                              .find_by(notification_type: :other)
@@ -35,9 +35,9 @@ module SesBlacklistRails
               post api_notification_path, params: param
             end
             subject { response.status }
-            it { is_expected.to eq 500 }
+            it('returns response satatus as 500') { is_expected.to eq 500 }
 
-            it {
+            it('creates Notification as other, and persiste request body.') {
               expect(
                 eval(Notification.order(:id)
                                  .find_by(notification_type: :other)
@@ -57,9 +57,9 @@ module SesBlacklistRails
               post api_notification_path, params: param
             end
             subject { response.status }
-            it { is_expected.to eq 204 }
+            it('returns response satatus as 204') { is_expected.to eq 204 }
 
-            it {
+            it('creates Notification as other, and persiste request body.') {
               expect(
                 eval(Notification.order(:id)
                                  .find_by(notification_type: :other)
@@ -75,13 +75,13 @@ module SesBlacklistRails
           let(:param) { sns_notification File.read(fixture_path.join('bounce_dsn.json')) }
           before { post api_notification_path, params: param }
 
-          it { expect(response.status).to eq 204 }
+          it('returns response satatus as 204') { expect(response.status).to eq 204 }
           it { expect { post api_notification_path, params: param }.to(change { Notification.count }) }
-          it {
+          it('creates a Notification as notification_type is :bounce') {
             expect(Notification.last.notification_type_before_type_cast)
               .to eq(Notification.notification_types[:bounce])
           }
-          it {
+          it('creates a Notification and its email is notified address') {
             expect(Notification.find_by(email: 'jane@example.com',
                                         notification_type: Notification.notification_types[:bounce])).to be_truthy
           }
@@ -91,17 +91,17 @@ module SesBlacklistRails
           let(:param) { sns_notification File.read(fixture_path.join('bounce.json')) }
           before { post api_notification_path, params: param }
 
-          it { expect(response.status).to eq 204 }
+          it('returns response satatus as 204') { expect(response.status).to eq 204 }
           it { expect { post api_notification_path, params: param }.to(change { Notification.count }) }
-          it {
+          it('creates a Notification as notification_type is :bounce') {
             expect(Notification.last.notification_type_before_type_cast)
               .to eq(Notification.notification_types[:bounce])
           }
-          it {
+          it('creates a Notification and its email is notified address') {
             expect(Notification.find_by(email: 'jane@example.com',
                                         notification_type: Notification.notification_types[:bounce])).to be_truthy
           }
-          it {
+          it('creates a Notification and its email is notified address') {
             expect(Notification.find_by(email: 'richard@example.com',
                                         notification_type: Notification.notification_types[:bounce])).to be_truthy
           }
@@ -113,13 +113,13 @@ module SesBlacklistRails
           let(:param) { sns_notification File.read(fixture_path.join('complaint_feedback.json')) }
           before { post api_notification_path, params: param }
 
-          it { expect(response.status).to eq 204 }
+          it('returns response satatus as 204') { expect(response.status).to eq 204 }
           it { expect { post api_notification_path, params: param }.to(change { Notification.count }) }
-          it {
+          it('creates a Notification as notification_type is :complaint') {
             expect(Notification.last.notification_type_before_type_cast)
               .to eq(Notification.notification_types[:complaint])
           }
-          it {
+          it('creates a Notification and its email is notified address') {
             expect(Notification.find_by(email: 'richard@example.com',
                                         notification_type: Notification.notification_types[:complaint])).to be_truthy
           }
@@ -131,11 +131,11 @@ module SesBlacklistRails
 
           it { expect(response.status).to eq 204 }
           it { expect { post api_notification_path, params: param }.to(change { Notification.count }) }
-          it {
+          it('creates a Notification as notification_type is :complaint') {
             expect(Notification.last.notification_type_before_type_cast)
               .to eq(Notification.notification_types[:complaint])
           }
-          it {
+          it('creates a Notification and its email is notified address') {
             expect(Notification.find_by(email: 'richard@example.com',
                                         notification_type: Notification.notification_types[:complaint])).to be_truthy
           }
@@ -147,13 +147,13 @@ module SesBlacklistRails
           let(:param) { sns_notification File.read(fixture_path.join('delivery.json')) }
           before { post api_notification_path, params: param }
 
-          it { expect(response.status).to eq 204 }
+          it('returns response satatus as 204') { expect(response.status).to eq 204 }
           it { expect { post api_notification_path, params: param }.to(change { Notification.count }) }
-          it {
+          it('creates a Notification as notification_type is :delivery') {
             expect(Notification.last.notification_type_before_type_cast)
               .to eq(Notification.notification_types[:delivery])
           }
-          it {
+          it('creates a Notification and its email is notified address') {
             expect(Notification.find_by(email: 'jane@example.com',
                                         notification_type: Notification.notification_types[:delivery])).to be_truthy
           }
