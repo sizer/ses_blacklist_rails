@@ -8,7 +8,7 @@ module SesBlacklistRails
       let(:fixture_path) { Rails.root.join('..', 'fixture', 'ses', 'response') }
 
       context 'Undetectable request' do
-        let(:param) { '{"message": "this is mysterious message"}' }
+        let(:param) { { message: 'this is mysterious message' }.to_json }
         before { post api_notification_path, params: param }
 
         it('returns response satatus as 403') { expect(response.status).to eq 403 }
