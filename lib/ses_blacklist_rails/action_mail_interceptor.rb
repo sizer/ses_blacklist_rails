@@ -8,18 +8,18 @@ module SesBlacklistRails
       private
 
       def validate!(message)
-        sanitize_destination! Notification.validate_bounce unless Config.send_bounce
-        sanitize_destination! Notification.validate_compliant unless Config.send_compliant
+        sanitize_destination! SesBlacklistRails::Notification.validate_bounce unless SesBlacklistRails::Config.send_bounce
+        sanitize_destination! SesBlacklistRails::Notification.validate_compliant unless SesBlacklistRails::Config.send_compliant
 
         defualt_address!(message) if message.to.blank?
         message
       end
 
       def defualt_address!(message)
-        if Config.default_address.blank?
+        if SesBlacklistRails::Config.default_address.blank?
           message.perform_deliveries = false
         else
-          message.to << Config.default_address
+          message.to << SesBlacklistRails::Config.default_address
         end
         message
       end
