@@ -13,7 +13,7 @@ module SesBlacklistRails # :nodoc:
     end
 
     delegate :send_bounce,     to: :config
-    delegate :send_compliant,  to: :config
+    delegate :send_complaint,  to: :config
     delegate :default_address, to: :config
   end
 end

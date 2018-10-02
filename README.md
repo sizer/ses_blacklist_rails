@@ -23,7 +23,7 @@ $ bundle exec rails g ses_blacklist_rails:install
 ```ruby
 SesBlacklistRails.configure do |config|
   config.send_bounce = false
-  config.send_compliant = false
+  config.send_complaint = false
   config.default_address = 'some_address@sample.com'
 end
 ```

@@ -14,8 +14,8 @@ module SesBlacklistRails
         ) unless SesBlacklistRails::Config.send_bounce
         sanitize_destination!(
           message,
-          SesBlacklistRails::Notification.validate_compliant
-        ) unless SesBlacklistRails::Config.send_compliant
+          SesBlacklistRails::Notification.validate_complaint
+        ) unless SesBlacklistRails::Config.send_complaint
 
         defualt_address!(message) if message.to.blank?
         message

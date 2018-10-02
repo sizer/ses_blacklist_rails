@@ -6,7 +6,7 @@ module SesBlacklistRails
       false
     end
 
-    config_accessor :send_compliant do
+    config_accessor :send_complaint do
       false
     end
 

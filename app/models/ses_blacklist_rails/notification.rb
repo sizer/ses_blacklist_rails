@@ -14,8 +14,8 @@ module SesBlacklistRails
         @validate_bounce ||= ->(email) { self.bounce.where(email: email).any? }
       end
 
-      def validate_compliant
-        @validate_compliant ||= ->(email) { self.compliant.where(email: email).any? }
+      def validate_complaint
+        @validate_complaint ||= ->(email) { self.complaint.where(email: email).any? }
       end
     end
   end
