@@ -1,3 +1,4 @@
+require 'ses_blacklist_rails/action_mail_interceptor'
 require 'ses_blacklist_rails/config'
 require 'ses_blacklist_rails/engine'
 
