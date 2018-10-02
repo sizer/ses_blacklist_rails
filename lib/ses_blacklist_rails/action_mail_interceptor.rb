@@ -8,8 +8,14 @@ module SesBlacklistRails
       private
 
       def validate!(message)
-        sanitize_destination! SesBlacklistRails::Notification.validate_bounce unless SesBlacklistRails::Config.send_bounce
-        sanitize_destination! SesBlacklistRails::Notification.validate_compliant unless SesBlacklistRails::Config.send_compliant
+        sanitize_destination!(
+          message,
+          SesBlacklistRails::Notification.validate_bounce
+        ) unless SesBlacklistRails::Config.send_bounce
+        sanitize_destination!(
+          message,
+          SesBlacklistRails::Notification.validate_compliant
+        ) unless SesBlacklistRails::Config.send_compliant
 
         defualt_address!(message) if message.to.blank?
         message
@@ -23,7 +29,7 @@ module SesBlacklistRails
         end
         message
       end
-      
+
       def sanitize_destination!(message, validation)
         message.to.reject! &validation
         message.cc.reject! &validation
