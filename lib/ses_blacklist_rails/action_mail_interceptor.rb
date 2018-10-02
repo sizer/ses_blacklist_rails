@@ -27,10 +27,10 @@ module SesBlacklistRails
       end
 
       def defualt_address!(message)
-        if SesBlacklistRails::Notification.default_address.blank?
+        if SesBlacklistRails.default_address.blank?
           message.perform_deliveries = false
         else
-          message.to << SesBlacklistRails::Notification.default_address
+          message.to << SesBlacklistRails.default_address
         end
         message
       end

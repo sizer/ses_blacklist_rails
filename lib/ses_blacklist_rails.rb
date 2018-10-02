@@ -3,11 +3,17 @@ require 'ses_blacklist_rails/config'
 require 'ses_blacklist_rails/engine'
 
 module SesBlacklistRails # :nodoc:
-  def self.configure(*)
-    yield config
-  end
+  class << self
+    def configure(*)
+      yield config
+    end
 
-  def self.config
-    @config ||= SesBlacklistRails::Config.new
+    def config
+      @config ||= SesBlacklistRails::Config.new
+    end
+
+    delegate :send_bounce,     to: :config
+    delegate :send_compliant,  to: :config
+    delegate :default_address, to: :config
   end
 end
