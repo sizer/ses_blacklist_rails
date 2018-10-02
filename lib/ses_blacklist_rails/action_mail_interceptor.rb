@@ -8,31 +8,26 @@ module SesBlacklistRails
       private
 
       def validate!(message)
-        unless SesBlacklistRails.send_bounce
-          validate_bounce = ->(email) { SesBlacklistRails::Notification.bounce.where(email: email).any? }
-          message.to.reject!(&validate_bounce)
-          message.cc.reject!(&validate_bounce)
-          message.bcc.reject!(&validate_bounce)
-        end
-
-        unless SesBlacklistRails.send_compliant
-          validate_compliant = ->(email) { SesBlacklistRails::Notification.compliant.where(email: email).any? }
-          message.to.reject!(&validate_compliant)
-          message.cc.reject!(&validate_compliant)
-          message.bcc.reject!(&validate_compliant)
-        end
+        sanitize_destination! Notification.validate_bounce unless Config.send_bounce
+        sanitize_destination! Notification.validate_compliant unless Config.send_compliant
 
         defualt_address!(message) if message.to.blank?
         message
       end
 
       def defualt_address!(message)
-        if SesBlacklistRails.default_address.blank?
+        if Config.default_address.blank?
           message.perform_deliveries = false
         else
-          message.to << SesBlacklistRails.default_address
+          message.to << Config.default_address
         end
         message
+      end
+      
+      def sanitize_destination!(message, validation)
+        message.to.reject! &validation
+        message.cc.reject! &validation
+        message.bcc.reject! &validation
       end
     end
   end
