@@ -11,21 +11,21 @@ module SesBlacklistRails
         sanitize_destination!(
           message,
           SesBlacklistRails::Notification.validate_bounce
-        ) unless SesBlacklistRails::Config.send_bounce
+        ) unless SesBlacklistRails.send_bounce
         sanitize_destination!(
           message,
           SesBlacklistRails::Notification.validate_complaint
-        ) unless SesBlacklistRails::Config.send_complaint
+        ) unless SesBlacklistRails.send_complaint
 
         defualt_address!(message) if message.to.blank?
         message
       end
 
       def defualt_address!(message)
-        if SesBlacklistRails::Config.default_address.blank?
+        if SesBlacklistRails.default_address.blank?
           message.perform_deliveries = false
         else
-          message.to << SesBlacklistRails::Config.default_address
+          message.to << SesBlacklistRails.default_address
         end
         message
       end
