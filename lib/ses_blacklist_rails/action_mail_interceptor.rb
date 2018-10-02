@@ -25,7 +25,7 @@ module SesBlacklistRails
         if SesBlacklistRails.default_address.blank?
           message.perform_deliveries = false
         else
-          message.to << SesBlacklistRails.default_address
+          message.to = [SesBlacklistRails.default_address]
         end
         message
       end
