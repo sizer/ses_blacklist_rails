@@ -31,9 +31,9 @@ module SesBlacklistRails
       end
 
       def sanitize_destination!(message, validation)
-        message.to.reject! &validation
-        message.cc.reject! &validation
-        message.bcc.reject! &validation
+        message.to&.reject! &validation
+        message.cc&.reject! &validation
+        message.bcc&.reject! &validation
       end
     end
   end
