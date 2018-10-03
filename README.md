@@ -26,6 +26,8 @@ SesBlacklistRails.configure do |config|
   config.send_complaint = false
   config.default_address = 'some_address@sample.com'
 end
+
+ActionMailer::Base.register_interceptor(::SesBlacklistRails::ActionMailInterceptor)
 ```
 
 ## Contributing
